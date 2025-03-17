@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sacred Studios Bot - Authentication</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        discord: {
+                            blurple: '#5865F2',
+                            dark: '#36393F',
+                            darker: '#2F3136',
+                            darkest: '#202225'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-discord-darkest text-gray-200 flex items-center justify-center h-screen">
+    <div class="text-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-4 border-discord-blurple border-t-transparent mx-auto mb-4"></div>
+        <h2 class="text-xl font-semibold">Authenticating...</h2>
+        <p class="text-gray-400 mt-2">Please wait while we process your login.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Process the OAuth callback
+            const fragment = new URLSearchParams(window.location.hash.slice(1));
+            const accessToken = fragment.get('access_token');
+            const expiresIn = fragment.get('expires_in');
+            
+            if (accessToken) {
+                // Store the token
+                localStorage.setItem('discord_token', accessToken);
+                const expirationTime = Date.now() + (parseInt(expiresIn) * 1000);
+                localStorage.setItem('discord_token_expiration', expirationTime);
+                
+                // Redirect to the dashboard
+                window.location.href = 'index.html';
+            } else {
+                // Authentication failed
+                window.location.href = 'login.html?error=auth_failed';
+            }
+        });
+    </script>
+</body>
+</html>
