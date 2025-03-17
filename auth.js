@@ -8,9 +8,8 @@ class AuthManager {
         // Configuration
         this.clientId = '1350043733760147548'; // Your Discord application client ID
         
-        // Set explicit GitHub Pages redirect URL instead of dynamic one
-        // Important: This must match exactly what you register in Discord Developer Portal
-        this.redirectUri = encodeURIComponent('https://moenyofficial.github.io/Dashboard/callback.html');
+        // FIX: Don't encode the redirect URI here - Discord needs the exact match
+        this.redirectUri = 'https://moenyofficial.github.io/Dashboard/callback.html';
         this.scope = 'identify guilds';
         
         // Authorized user IDs (Discord user IDs that are allowed access)
@@ -57,7 +56,9 @@ class AuthManager {
     }
     
     redirectToDiscordAuth() {
-        const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&response_type=token&scope=${this.scope}`;
+        // FIX: Encode the URI only when building the authorization URL
+        const encodedRedirect = encodeURIComponent(this.redirectUri);
+        const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${this.clientId}&redirect_uri=${encodedRedirect}&response_type=token&scope=${this.scope}`;
         window.location.href = authUrl;
     }
     
