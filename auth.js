@@ -8,8 +8,9 @@ class AuthManager {
         // Configuration
         this.clientId = '1350043733760147548'; // Your Discord application client ID
         
-        // FIX: Don't encode the redirect URI here - Discord needs the exact match
-        this.redirectUri = 'https://moenyofficial.github.io/Dashboard/callback.html';
+        // IMPORTANT: This must match EXACTLY what you registered in Discord Developer Portal
+        // Based on the error URL, it seems you registered the root path version
+        this.redirectUri = 'https://moenyofficial.github.io/callback.html';
         this.scope = 'identify guilds';
         
         // Authorized user IDs (Discord user IDs that are allowed access)

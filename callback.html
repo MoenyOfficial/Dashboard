@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sacred Studios Bot - Authentication</title>
+    <title>Authenticating - Sacred Studios</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -21,17 +21,18 @@
             }
         }
     </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-discord-darkest text-gray-200 flex items-center justify-center h-screen">
     <div class="text-center">
         <div class="animate-spin rounded-full h-12 w-12 border-4 border-discord-blurple border-t-transparent mx-auto mb-4"></div>
-        <h2 class="text-xl font-semibold">Authenticating...</h2>
-        <p class="text-gray-400 mt-2">Please wait while we process your login.</p>
+        <h2 class="text-xl font-semibold">Authentication Successful</h2>
+        <p class="text-gray-400 mt-2">Redirecting to dashboard...</p>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Process the OAuth callback
+            // Process the OAuth callback (extract from the URL fragment)
             const fragment = new URLSearchParams(window.location.hash.slice(1));
             const accessToken = fragment.get('access_token');
             const expiresIn = fragment.get('expires_in');
@@ -42,11 +43,25 @@
                 const expirationTime = Date.now() + (parseInt(expiresIn) * 1000);
                 localStorage.setItem('discord_token_expiration', expirationTime);
                 
-                // Redirect to the dashboard
-                window.location.href = 'index.html';
+                // Redirect to the dashboard (after a short delay to show the success message)
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
             } else {
                 // Authentication failed
-                window.location.href = 'login.html?error=auth_failed';
+                document.querySelector('h2').textContent = 'Authentication Failed';
+                document.querySelector('p').textContent = 'Please try again';
+                document.querySelector('p').classList.add('text-discord-red');
+                document.querySelector('div.animate-spin').classList.add('hidden');
+                
+                // Add a button to try again
+                const tryAgain = document.createElement('button');
+                tryAgain.classList.add('mt-4', 'px-4', 'py-2', 'bg-discord-blurple', 'rounded-md', 'hover:bg-opacity-80');
+                tryAgain.textContent = 'Try Again';
+                tryAgain.addEventListener('click', () => {
+                    window.location.href = 'login.html';
+                });
+                document.querySelector('.text-center').appendChild(tryAgain);
             }
         });
     </script>
