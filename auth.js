@@ -6,14 +6,16 @@
 class AuthManager {
     constructor() {
         // Configuration
-        this.clientId = '1350043733760147548'; // Replace with your Discord application client ID
-        this.redirectUri = encodeURIComponent(window.location.origin + '/callback.html');
+        this.clientId = '1350043733760147548'; // Your Discord application client ID
+        
+        // Set explicit GitHub Pages redirect URL instead of dynamic one
+        // Important: This must match exactly what you register in Discord Developer Portal
+        this.redirectUri = encodeURIComponent('https://moenyofficial.github.io/Dashboard/callback.html');
         this.scope = 'identify guilds';
         
         // Authorized user IDs (Discord user IDs that are allowed access)
         this.authorizedUsers = [
-            '628236400361340959', // Example: User 1's Discord ID
-            '-', // Example: User 2's Discord ID
+            '628236400361340959', // Your authorized Discord ID
             // Add more authorized users as needed
         ];
         
